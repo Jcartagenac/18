@@ -18,7 +18,7 @@ function App() {
     minutes: 0,
     seconds: 0
   })
-  const [weekdaysLeft, setWeekdaysLeft] = useState(0)
+  const [weekdayInfo, setWeekdayInfo] = useState({ count: 0, dayName: '', dayNamePlural: '' })
   const [floatingElements, setFloatingElements] = useState([])
 
   // Calcular tiempo restante hasta el 18 de septiembre
@@ -43,10 +43,23 @@ function App() {
           seconds: Math.floor((difference / 1000) % 60)
         })
         
-        // Calcular días de la semana restantes
+        // Calcular días específicos de la semana restantes
+        const today = new Date()
+        const currentDayOfWeek = today.getDay() // 0 = domingo, 1 = lunes, etc.
+        const dayNames = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado']
+        const dayNamesPlural = ['domingos', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados']
+        const currentDayName = dayNames[currentDayOfWeek]
+        const currentDayNamePlural = dayNamesPlural[currentDayOfWeek]
+        
+        // Calcular cuántos días de la semana específicos faltan
         const daysUntil = Math.floor(difference / (1000 * 60 * 60 * 24))
-        const weekdays = Math.floor(daysUntil / 7)
-        setWeekdaysLeft(weekdays)
+        const specificWeekdaysCount = Math.floor(daysUntil / 7)
+        
+        setWeekdayInfo({
+          count: specificWeekdaysCount,
+          dayName: currentDayName,
+          dayNamePlural: currentDayNamePlural
+        })
       }
     }
 
@@ -174,8 +187,8 @@ function App() {
             transition={{ delay: 2 }}
             className="text-xl md:text-2xl text-blue-800 font-semibold mb-6"
           >
-            {weekdaysLeft > 0 ? (
-              <>Faltan <span className="text-red-600 font-bold">{weekdaysLeft}</span> semanas para el 18 de septiembre.</>
+            {weekdayInfo.count > 0 ? (
+              <>Faltan <span className="text-red-600 font-bold">{weekdayInfo.count}</span> {weekdayInfo.dayNamePlural} para el 18 de septiembre.</>
             ) : (
               "¡Ya llegamos al 18 de septiembre!"
             )}

@@ -52,9 +52,9 @@ const MusicPlayer = () => {
         
         <div className="bg-gray-700/80 backdrop-blur-sm rounded-lg p-4 mb-4">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <span className="text-red-400">🌺</span>
+            <span className="text-red-400">🇨🇱</span>
             <span className="font-medium text-lg">Chica Vacilona</span>
-            <span className="text-red-400">🌺</span>
+            <span className="text-red-400">🇨🇱</span>
           </div>
           <p className="text-sm text-gray-300 mb-1">Contrabando Sureño</p>
           <p className="text-xs text-gray-400">🎶 Cumbia Ranchera Chilena 🎶</p>
