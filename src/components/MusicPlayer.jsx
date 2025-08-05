@@ -143,7 +143,7 @@ const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Audio element (oculto) */}
+      {/* Audio element con fuente real */}
       <audio
         ref={audioRef}
         loop
@@ -151,10 +151,11 @@ const MusicPlayer = () => {
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
+        crossOrigin="anonymous"
       >
-        {/* Nota: En un entorno real, aquí iría la URL del archivo de audio */}
-        {/* Por ahora, usamos un placeholder ya que no tenemos acceso directo al archivo */}
-        <source src="/placeholder-audio.mp3" type="audio/mpeg" />
+        {/* Usando archivo de audio local */}
+        <source src="/audio/chica-vacilona-sample.mp3" type="audio/mpeg" />
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav" />
         Tu navegador no soporta el elemento de audio.
       </audio>
     </motion.div>
