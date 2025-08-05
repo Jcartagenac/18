@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import MusicPlayer from './components/MusicPlayer'
+import ShareButtons from './components/ShareButtons'
 import './App.css'
 
 // Importar imágenes
@@ -124,23 +125,23 @@ function App() {
       ))}
 
       {/* Header con banderas */}
-      <header className="relative z-10 bg-gradient-to-r from-red-600 to-blue-800 text-white py-6 shadow-lg">
+      <header className="relative z-10 bg-gradient-to-r from-red-600 to-blue-800 text-white py-3 md:py-6 shadow-lg">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="flex items-center justify-center gap-4"
+            className="flex items-center justify-center gap-2 md:gap-4"
           >
-            <img src={banderaChile2} alt="Bandera Chile" className="w-12 h-8 object-cover rounded" />
-            <h1 className="text-3xl md:text-5xl font-bold">¿Cuánto falta para el 18?</h1>
-            <img src={banderaChile2} alt="Bandera Chile" className="w-12 h-8 object-cover rounded" />
+            <img src={banderaChile2} alt="Bandera Chile" className="w-8 h-5 md:w-12 md:h-8 object-cover rounded" />
+            <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold">¿Cuánto falta para el 18?</h1>
+            <img src={banderaChile2} alt="Bandera Chile" className="w-8 h-5 md:w-12 md:h-8 object-cover rounded" />
           </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-lg md:text-xl mt-2"
+            className="text-sm md:text-lg lg:text-xl mt-1 md:mt-2"
           >
             ¡Celebremos juntos nuestras Fiestas Patrias!
           </motion.p>
@@ -148,15 +149,15 @@ function App() {
       </header>
 
       {/* Contador principal */}
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-[70vh] px-4">
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] md:min-h-[70vh] px-2 md:px-4 py-4">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 1, duration: 0.8, type: "spring" }}
-          className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12 text-center max-w-4xl w-full"
+          className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-4 md:p-8 lg:p-12 text-center max-w-4xl w-full"
         >
           {/* Contador de tiempo */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 lg:gap-8 mb-4 md:mb-8">
             {[
               { label: 'Días', value: timeLeft.days },
               { label: 'Horas', value: timeLeft.hours },
@@ -168,12 +169,12 @@ function App() {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.5 + index * 0.1 }}
-                className="bg-gradient-to-br from-blue-800 to-red-600 text-white rounded-2xl p-4 md:p-6 shadow-lg"
+                className="bg-gradient-to-br from-blue-800 to-red-600 text-white rounded-2xl p-2 md:p-4 lg:p-6 shadow-lg"
               >
-                <div className="text-3xl md:text-5xl font-bold mb-2">
+                <div className="text-2xl md:text-3xl lg:text-5xl font-bold mb-1 md:mb-2">
                   {formatTime(item.value)}
                 </div>
-                <div className="text-sm md:text-lg font-medium opacity-90">
+                <div className="text-xs md:text-sm lg:text-lg font-medium opacity-90">
                   {item.label}
                 </div>
               </motion.div>
@@ -185,7 +186,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}
-            className="text-xl md:text-2xl text-blue-800 font-semibold mb-6"
+            className="text-lg md:text-xl lg:text-2xl text-blue-800 font-semibold mb-4 md:mb-6"
           >
             {weekdayInfo.count > 0 ? (
               <>Faltan <span className="text-red-600 font-bold">{weekdayInfo.count}</span> {weekdayInfo.dayNamePlural} para el 18 de septiembre.</>
@@ -196,6 +197,15 @@ function App() {
 
           {/* Reproductor de música */}
           <MusicPlayer />
+          
+          {/* Botones de compartir */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.5 }}
+          >
+            <ShareButtons />
+          </motion.div>
         </motion.div>
       </main>
 

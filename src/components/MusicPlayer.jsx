@@ -40,20 +40,20 @@ const MusicPlayer = () => {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 2.5 }}
-      className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-6 mb-6 relative overflow-hidden"
+      className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-3 md:p-6 mb-4 md:mb-6 relative overflow-hidden"
     >
       {/* Efectos visuales de fondo */}
       <div className="absolute inset-0 bg-gradient-to-r from-red-600/10 to-blue-600/10 animate-pulse"></div>
       
       <div className="relative z-10 text-white text-center">
-        <h3 className="text-lg font-semibold mb-3 flex items-center justify-center gap-2">
+        <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 flex items-center justify-center gap-2">
           🎵 Música Patriótica 🎵
         </h3>
         
-        <div className="bg-gray-700/80 backdrop-blur-sm rounded-lg p-4 mb-4">
+        <div className="bg-gray-700/80 backdrop-blur-sm rounded-lg p-3 md:p-4 mb-3 md:mb-4">
           <div className="flex items-center justify-center gap-3 mb-2">
             <span className="text-red-400">🇨🇱</span>
-            <span className="font-medium text-lg">Chica Vacilona</span>
+            <span className="font-medium text-base md:text-lg">Chica Vacilona</span>
             <span className="text-red-400">🇨🇱</span>
           </div>
           <p className="text-sm text-gray-300 mb-1">Contrabando Sureño</p>
