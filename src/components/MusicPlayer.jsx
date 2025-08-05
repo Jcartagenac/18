@@ -1,23 +1,19 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react'
+import { Play, Pause, Volume2, ExternalLink } from 'lucide-react'
 
 const MusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
+  const [showVideo, setShowVideo] = useState(false)
   const [hasUserInteracted, setHasUserInteracted] = useState(false)
-  const audioRef = useRef(null)
 
-  // URL de la canción "Chica Vacilona" de Contrabando Sureño
-  const musicUrl = "https://www.youtube.com/watch?v=vHa6PzOg6oA"
+  // ID del video de YouTube "Chica Vacilona" de Contrabando Sureño
+  const youtubeVideoId = "vHa6PzOg6oA"
+  const youtubeUrl = `https://www.youtube.com/watch?v=${youtubeVideoId}`
 
   useEffect(() => {
-    // Intentar reproducir automáticamente después de la primera interacción del usuario
+    // Mostrar el video después de la primera interacción del usuario
     const handleFirstInteraction = () => {
       setHasUserInteracted(true)
-      if (audioRef.current && !isPlaying) {
-        playMusic()
-      }
       // Remover el listener después de la primera interacción
       document.removeEventListener('click', handleFirstInteraction)
       document.removeEventListener('keydown', handleFirstInteraction)
@@ -33,39 +29,10 @@ const MusicPlayer = () => {
       document.removeEventListener('keydown', handleFirstInteraction)
       document.removeEventListener('touchstart', handleFirstInteraction)
     }
-  }, [isPlaying])
+  }, [])
 
-  const playMusic = async () => {
-    if (audioRef.current) {
-      try {
-        await audioRef.current.play()
-        setIsPlaying(true)
-      } catch (error) {
-        console.log('No se pudo reproducir automáticamente:', error)
-      }
-    }
-  }
-
-  const pauseMusic = () => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      setIsPlaying(false)
-    }
-  }
-
-  const togglePlay = () => {
-    if (isPlaying) {
-      pauseMusic()
-    } else {
-      playMusic()
-    }
-  }
-
-  const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !isMuted
-      setIsMuted(!isMuted)
-    }
+  const toggleVideo = () => {
+    setShowVideo(!showVideo)
   }
 
   return (
@@ -93,71 +60,100 @@ const MusicPlayer = () => {
           <p className="text-xs text-gray-400">🎶 Cumbia Ranchera Chilena 🎶</p>
         </div>
 
-        {/* Controles de reproducción */}
+        {/* Reproductor de YouTube embebido */}
+        {hasUserInteracted && showVideo ? (
+          <div className="mb-4">
+            {/* Contenedor responsivo para YouTube */}
+            <div className="relative w-full" style={{ paddingBottom: '56.25%' /* 16:9 aspect ratio */ }}>
+              <iframe
+                className="absolute top-0 left-0 w-full h-full rounded-lg"
+                src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1`}
+                title="Chica Vacilona - Contrabando Sureño"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        ) : (
+          /* Imagen de vista previa */
+          <div className="mb-4">
+            <div className="relative w-full bg-gray-800 rounded-lg overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+              <img
+                src={`https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`}
+                alt="Chica Vacilona - Vista previa"
+                className="absolute top-0 left-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="bg-red-600 rounded-full p-4 cursor-pointer"
+                  onClick={toggleVideo}
+                >
+                  <Play size={32} className="text-white ml-1" />
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Controles */}
         <div className="flex items-center justify-center gap-4">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={togglePlay}
-            className="bg-red-600 hover:bg-red-700 text-white p-3 rounded-full transition-colors duration-200 shadow-lg"
-          >
-            {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-          </motion.button>
+          {!showVideo ? (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleVideo}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full transition-colors duration-200 shadow-lg flex items-center gap-2"
+              disabled={!hasUserInteracted}
+            >
+              <Play size={20} />
+              <span>Reproducir Video</span>
+            </motion.button>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleVideo}
+              className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-full transition-colors duration-200 shadow-lg flex items-center gap-2"
+            >
+              <Pause size={20} />
+              <span>Ocultar Video</span>
+            </motion.button>
+          )}
           
-          <motion.button
+          <motion.a
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={toggleMute}
-            className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full transition-colors duration-200 shadow-lg"
+            href={youtubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full transition-colors duration-200 shadow-lg flex items-center gap-2"
           >
-            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-          </motion.button>
+            <ExternalLink size={20} />
+            <span className="hidden sm:inline">YouTube</span>
+          </motion.a>
         </div>
 
         {/* Indicador de estado */}
         <div className="mt-3 text-xs text-gray-400">
           {!hasUserInteracted && (
-            <p className="animate-pulse">🎵 Haz clic en cualquier lugar para activar la música 🎵</p>
+            <p className="animate-pulse">🎵 Haz clic en cualquier lugar para activar el reproductor 🎵</p>
           )}
-          {hasUserInteracted && isPlaying && (
-            <p className="text-green-400">🎵 Reproduciendo música patriótica 🎵</p>
+          {hasUserInteracted && !showVideo && (
+            <p className="text-yellow-400">▶️ Presiona "Reproducir Video" para escuchar la música</p>
           )}
-          {hasUserInteracted && !isPlaying && (
-            <p className="text-yellow-400">⏸️ Música pausada</p>
+          {hasUserInteracted && showVideo && (
+            <p className="text-green-400">🎵 Video de YouTube reproduciéndose 🎵</p>
           )}
         </div>
 
         {/* Nota sobre la música */}
         <div className="mt-4 text-xs text-gray-500 border-t border-gray-600 pt-3">
-          <p>🎼 Música original disponible en YouTube y plataformas digitales</p>
-          <p className="mt-1">
-            <a 
-              href={musicUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 underline transition-colors"
-            >
-              Ver video oficial en YouTube
-            </a>
-          </p>
+          <p>🎼 Video oficial de "Chica Vacilona" - Contrabando Sureño</p>
+          <p className="mt-1">🎥 Reproducción directa desde YouTube con audio de alta calidad</p>
         </div>
       </div>
-
-      {/* Audio element con fuente real */}
-      <audio
-        ref={audioRef}
-        loop
-        preload="metadata"
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onEnded={() => setIsPlaying(false)}
-        crossOrigin="anonymous"
-      >
-        {/* Usando archivo de audio local */}
-        <source src="/audio/chica-vacilona-sample.mp3" type="audio/mpeg" />
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav" />
-        Tu navegador no soporta el elemento de audio.
-      </audio>
     </motion.div>
   )
 }
